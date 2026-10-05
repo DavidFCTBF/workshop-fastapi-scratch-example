@@ -1,37 +1,37 @@
 import os
 from pathlib import Path
 
+from dotenv import load_dotenv
 from dependency_injector import containers, providers
 from manager.infrastructure.di.database import PostgressDatabase
 from manager.infrastructure.di.repository import Repository
 from manager.infrastructure.di.app_service import AppService
 
 _CONFIG_PATH = Path(__file__).resolve().parents[2] / "config.yml"
+_ENV_PATH = Path(__file__).resolve().parents[3] / ".env"
+_REQUIRED_ENV = (
+    "POSTGRES_HOST",
+    "POSTGRES_USER",
+    "POSTGRES_PASSWORD",
+    "POSTGRES_DB",
+    "POSTGRES_PORT",
+)
 
+load_dotenv(_ENV_PATH)
 
-def _postgres_env_overrides() -> dict:
-    mapping = {
-        "host": "POSTGRES_HOST",
-        "user": "POSTGRES_USER",
-        "password": "POSTGRES_PASSWORD",
-        "database": "POSTGRES_DB",
-        "port": "POSTGRES_PORT",
-    }
-    values = {
-        key: os.environ[env_name]
-        for key, env_name in mapping.items()
-        if env_name in os.environ
-    }
-    if not values:
-        return {}
-    return {"postgre_sql": values}
+_missing = [name for name in _REQUIRED_ENV if not os.environ.get(name)]
+if _missing:
+    raise RuntimeError(
+        "Missing Postgres environment variables: "
+        + ", ".join(_missing)
+        + ". Copy .env.example to .env and set them."
+    )
 
 
 class Container(containers.DeclarativeContainer):
 
     config = providers.Configuration()
     config.from_yaml(str(_CONFIG_PATH))
-    config.from_dict(_postgres_env_overrides())
 
     databases = providers.Container(
         PostgressDatabase,

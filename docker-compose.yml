@@ -1,19 +1,14 @@
-x-db-credentials: &db-credentials
-  POSTGRES_USER: david.flores
-  POSTGRES_PASSWORD: david.flores
-  POSTGRES_DB: rh_employee
-
 services:
   db:
     image: postgres:16
-    environment:
-      <<: *db-credentials
+    env_file:
+      - .env
     ports:
       - "5432:5432"
     volumes:
       - rh_pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U david.flores -d rh_employee"]
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -21,12 +16,12 @@ services:
 
   api:
     build: .
+    env_file:
+      - .env
+    environment:
+      POSTGRES_HOST: db
     ports:
       - "8000:8000"
-    environment:
-      <<: *db-credentials
-      POSTGRES_HOST: db
-      POSTGRES_PORT: "5432"
     depends_on:
       db:
         condition: service_healthy

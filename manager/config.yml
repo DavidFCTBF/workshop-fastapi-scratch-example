@@ -1,6 +1,6 @@
 postgre_sql:
-  host: 'localhost'
-  user: 'david.flores'
-  password: 'david.flores'
-  database: 'rh_employee'
-  port: '5432'
+  host: ${POSTGRES_HOST}
+  user: ${POSTGRES_USER}
+  password: ${POSTGRES_PASSWORD}
+  database: ${POSTGRES_DB}
+  port: ${POSTGRES_PORT}
