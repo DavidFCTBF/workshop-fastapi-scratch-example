@@ -20,12 +20,9 @@ container.wire(modules=[__name__])
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # 1. Fetch your engine from the container
     db = container.databases.postgre_sql()
 
-    # 2. Tell SQLAlchemy to create all tables if they don't exist
     async with db.sesion_maker.kw['bind'].begin() as conn:
-        # Import your declarative base (where EmployeeORM inherits from)
         from manager.domain.entities.generic_model import GenericModelORM
         await conn.run_sync(GenericModelORM.metadata.create_all)
 
