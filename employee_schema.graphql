@@ -1,0 +1,25 @@
+"""Date with time (isoformat)"""
+scalar DateTime
+
+type GetEmployeeSchema {
+  id: Int!
+  updatedDate: DateTime!
+  updatedBy: String!
+  createdBy: String!
+  createdDate: DateTime!
+  firstName: String!
+  email: String!
+}
+
+type Mutation {
+  create(employee: SetEmployeeSchema!): GetEmployeeSchema!
+}
+
+type Query {
+  getAll: [GetEmployeeSchema!]!
+}
+
+input SetEmployeeSchema {
+  firstName: String!
+  email: String!
+}

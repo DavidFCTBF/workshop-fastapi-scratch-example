@@ -7,11 +7,12 @@ from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, Asyn
 
 class PostgreSQL:
     sesion_maker: Any
+    connection_url: URL
 
     def __init__(self, host: str, database: str, user: str, password: str, port: int) -> None:
 
-        connection_url = URL.create(
-            drivername="postgresql+psycopg",  # <--- CAMBIO CLAVE: +psycopg (sin el número 3)
+        self.connection_url = URL.create(
+            drivername="postgresql+psycopg",
             username=user,
             password=password,
             host=host,
@@ -19,9 +20,10 @@ class PostgreSQL:
             database=database
         )
 
+    def connect_to_database(self):
 
-        engine = create_async_engine(
-            connection_url,
+        engine= create_async_engine(
+            self.connection_url,
             echo=True,
         )
 

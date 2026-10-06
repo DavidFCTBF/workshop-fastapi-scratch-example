@@ -13,13 +13,11 @@ class GenericRepository(IGenericRepository):
 
 
     async def create(self, ir_model: GenericModelSchema) -> GenericModelSchema:
-        # 1. Convert Strawberry dataclass input to a dictionary
         data_dict = asdict(ir_model)
 
-        # 2. Filter out None values manually (replacing exclude_none=True)
+
         data_dict = {k: v for k, v in data_dict.items() if v is not None}
-        data_dict.update({'updated_by': 'system', 'created_by': 'system'})  # Add default values for updated_by and created_by
-        # 3. Pass kwargs to ORM model
+        data_dict.update({'updated_by': 'system', 'created_by': 'system'})
         new_orm_obj = self.orm_model(**data_dict)
         self.db.add(new_orm_obj)
         try:

@@ -857,20 +857,18 @@ dependencies = [
     { name = "fastapi", extra = ["standard"] },
     { name = "greenlet" },
     { name = "psycopg", extra = ["binary"] },
-    { name = "python-dotenv" },
     { name = "sqlalchemy" },
     { name = "strawberry-graphql", extra = ["fastapi"] },
 ]
 
 [package.metadata]
 requires-dist = [
-    { name = "dependency-injector", specifier = ">=4.49.1" },
+    { name = "dependency-injector", specifier = "==4.49.1" },
     { name = "fastapi", extras = ["standard"], specifier = "==0.141.1" },
-    { name = "greenlet", specifier = ">=3.5.6" },
-    { name = "psycopg", extras = ["binary"], specifier = ">=3.3.6" },
-    { name = "python-dotenv", specifier = ">=1.2.3" },
-    { name = "sqlalchemy", specifier = ">=2.1.1" },
-    { name = "strawberry-graphql", extras = ["fastapi"], specifier = ">=0.328.0" },
+    { name = "greenlet", specifier = "==3.5.6" },
+    { name = "psycopg", extras = ["binary"], specifier = "==3.3.6" },
+    { name = "sqlalchemy", specifier = "==2.1.1" },
+    { name = "strawberry-graphql", extras = ["fastapi"], specifier = "==0.328.0" },
 ]
 
 [[package]]
